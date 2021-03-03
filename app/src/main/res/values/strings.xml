@@ -3,5 +3,6 @@
     <string name="save">Save</string>
     <string name="name">Name</string>
     <string name="email">Email</string>
+    <string name="todo">TODO</string>
 
 </resources>

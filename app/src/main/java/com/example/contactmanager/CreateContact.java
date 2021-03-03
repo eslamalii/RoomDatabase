@@ -1,18 +1,20 @@
 package com.example.contactmanager;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
-import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
 
-import com.example.contactmanager.Model.Contact;
 import com.example.contactmanager.Model.ContactViewModel;
 import com.example.contactmanager.databinding.ActivityCreateContactBinding;
 
 public class CreateContact extends AppCompatActivity {
+
+    public static final String NAME = "name";
+    public static final String EMAIL = "email";
 
     private ActivityCreateContactBinding binding;
     private ContactViewModel viewModel;
@@ -27,15 +29,23 @@ public class CreateContact extends AppCompatActivity {
         viewModel = new ViewModelProvider.AndroidViewModelFactory(CreateContact.this.getApplication()).create(ContactViewModel.class);
 
         binding.saveBtn.setOnClickListener(v -> {
+            Intent intent = new Intent();
 
             if (!TextUtils.isEmpty(binding.emailText.getText()) && !TextUtils.isEmpty(binding.nameText.getText())) {
 
-                Contact contact = new Contact(binding.nameText.getText().toString(), binding.nameText.getText().toString());
-                viewModel.insert(contact);
+                String name = binding.nameText.getText().toString();
+                String email = binding.nameText.getText().toString();
+
+                intent.putExtra(NAME, name);
+                intent.putExtra(EMAIL, email);
+                setResult(RESULT_OK, intent);
+
+
 
             } else {
-                Toast.makeText(this, "Please fill the 2 fields", Toast.LENGTH_SHORT).show();
+                setResult(RESULT_CANCELED, intent);
             }
+            finish();
         });
     }
 }
