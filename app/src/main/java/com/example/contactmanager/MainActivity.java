@@ -10,20 +10,24 @@ import android.widget.ListAdapter;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.example.contactmanager.Model.Contact;
 import com.example.contactmanager.Model.ContactViewModel;
+import com.example.contactmanager.adapter.RecyclerViewAdapter;
 import com.example.contactmanager.databinding.ActivityMainBinding;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
     public static final int REQUEST_CODE = 1;
     private ActivityMainBinding binding;
     private ContactViewModel contactViewModel;
-    private ArrayList<String> arrayList;
-    private ArrayAdapter<String> arrayAdapter;
+    private RecyclerViewAdapter recyclerViewAdapter;
+    private List<Contact> contacts;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,19 +35,21 @@ public class MainActivity extends AppCompatActivity {
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         View view = binding.getRoot();
         setContentView(view);
-        arrayList = new ArrayList<String>();
+
+        binding.recyclerView.setHasFixedSize(true);
+        binding.recyclerView.setLayoutManager(new LinearLayoutManager(this));
+
 
         contactViewModel = new ViewModelProvider.AndroidViewModelFactory(MainActivity.this.getApplication())
                 .create(ContactViewModel.class);
 
         contactViewModel.getContacts().observe(this, contacts -> {
-            for (Contact contact : contacts){
-                arrayList.add(contact.getName());
-            }
 
-            arrayAdapter = new ArrayAdapter<>(this, android.R.layout.simple_expandable_list_item_1, arrayList);
 
-            binding.listViewTest.setAdapter(arrayAdapter);
+            //Setup Adapter
+            recyclerViewAdapter = new RecyclerViewAdapter(contacts, this);
+            binding.recyclerView.setAdapter(recyclerViewAdapter);
+
         });
 
 
@@ -61,6 +67,8 @@ public class MainActivity extends AppCompatActivity {
             String email = data.getStringExtra(CreateContact.EMAIL);
 
             Contact contact = new Contact(name, email);
+
+            contactViewModel.insert(contact);
         }
     }
 }

@@ -40,8 +40,6 @@ public class CreateContact extends AppCompatActivity {
                 intent.putExtra(EMAIL, email);
                 setResult(RESULT_OK, intent);
 
-
-
             } else {
                 setResult(RESULT_CANCELED, intent);
             }
