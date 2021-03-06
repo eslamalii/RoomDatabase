@@ -20,21 +20,27 @@ public class ContactRepo {
         data = contactDao.getAllContacts();
     }
 
-    public LiveData<List<Contact>> getAllContacts(){ return data;}
+    public LiveData<List<Contact>> getAllContacts() {
+        return data;
+    }
 
-    public void insert(Contact contact){
+    public void insert(Contact contact) {
         ContactRoomDatabase.EXECUTOR_SERVICE.execute(() -> contactDao.insert(contact));
     }
 
-    public LiveData<Contact> getContact(int id){
+    public void deleteAllContacts() {
+        ContactRoomDatabase.EXECUTOR_SERVICE.execute(() -> contactDao.deleteAllContact());
+    }
+
+    public LiveData<Contact> getContact(int id) {
         return contactDao.get(id);
     }
 
-    public void update(Contact contact){
+    public void update(Contact contact) {
         ContactRoomDatabase.EXECUTOR_SERVICE.execute(() -> contactDao.updateContact(contact));
     }
 
-    public void delete(Contact contact){
+    public void delete(Contact contact) {
         ContactRoomDatabase.EXECUTOR_SERVICE.execute(() -> contactDao.deleteContact(contact));
     }
 }

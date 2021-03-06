@@ -25,40 +25,39 @@ public abstract class ContactRoomDatabase extends RoomDatabase {
 
     private static volatile ContactRoomDatabase INSTANCE;
 
-    private static final RoomDatabase.Callback CALLBACK =
-            new RoomDatabase.Callback() {
-                @Override
-                public void onCreate(@NonNull SupportSQLiteDatabase db) {
-                    super.onCreate(db);
-                    EXECUTOR_SERVICE.execute(() -> {
-                        ContactDao contactDao = INSTANCE.contactDao();
-                        contactDao.deleteAllContact();
-
-                        Contact contact = new Contact("Eslam", "eslam@hotmail.com");
-                        contactDao.insert(contact);
-
-                        contact = new Contact("Ahmed", "ahmed@hotmail.com");
-                        contactDao.insert(contact);
-
-                        contact = new Contact("salah", "salah@hotmail.com");
-                        contactDao.insert(contact);
-
-                        contact = new Contact("Foad", "foad@hotmail.com");
-                        contactDao.insert(contact);
-
-                        contact = new Contact("Sarah", "sarah@hotmail.com");
-                        contactDao.insert(contact);
-
-                    });
-                }
-            };
+//    private static final RoomDatabase.Callback CALLBACK =
+//            new RoomDatabase.Callback() {
+//                @Override
+//                public void onCreate(@NonNull SupportSQLiteDatabase db) {
+//                    super.onCreate(db);
+//                    EXECUTOR_SERVICE.execute(() -> {
+//                        ContactDao contactDao = INSTANCE.contactDao();
+//                        contactDao.deleteAllContact();
+//
+//                        Contact contact = new Contact("Eslam", "eslam@hotmail.com");
+//                        contactDao.insert(contact);
+//
+//                        contact = new Contact("Ahmed", "ahmed@hotmail.com");
+//                        contactDao.insert(contact);
+//
+//                        contact = new Contact("salah", "salah@hotmail.com");
+//                        contactDao.insert(contact);
+//
+//                        contact = new Contact("Foad", "foad@hotmail.com");
+//                        contactDao.insert(contact);
+//
+//                        contact = new Contact("Sarah", "sarah@hotmail.com");
+//                        contactDao.insert(contact);
+//
+//                    });
+//                }
+//            };
 
     public static ContactRoomDatabase getInstance(final Context context) {
         if (INSTANCE == null) {
             synchronized (ContactRoomDatabase.class) {
                 if (INSTANCE == null) {
                     INSTANCE = Room.databaseBuilder(context.getApplicationContext(), ContactRoomDatabase.class, "contact_database")
-                            .addCallback(CALLBACK)
                             .build();
                 }
             }

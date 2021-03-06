@@ -21,7 +21,15 @@ public class ContactViewModel extends AndroidViewModel {
         contacts = contactRepo.getAllContacts();
     }
 
-    public LiveData<List<Contact>> getContacts(){return contacts;}
+    public LiveData<List<Contact>> getContacts() {
+        return contacts;
+    }
 
-    public void insert(Contact contact) {contactRepo.insert(contact);}
+    public void insert(Contact contact) {
+        contactRepo.insert(contact);
+    }
+
+    public void deleteAllContacts() {
+        contactRepo.deleteAllContacts();
+    }
 }
