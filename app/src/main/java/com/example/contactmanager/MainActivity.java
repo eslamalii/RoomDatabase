@@ -3,6 +3,7 @@ package com.example.contactmanager;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ListAdapter;
@@ -20,9 +21,10 @@ import com.example.contactmanager.databinding.ActivityMainBinding;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements RecyclerViewAdapter.OnContactClickListener {
 
     public static final int REQUEST_CODE = 1;
+    private static final String TAG = "TAG";
     private ActivityMainBinding binding;
     private ContactViewModel contactViewModel;
     private RecyclerViewAdapter recyclerViewAdapter;
@@ -47,7 +49,7 @@ public class MainActivity extends AppCompatActivity {
 
 
             //Setup Adapter
-            recyclerViewAdapter = new RecyclerViewAdapter(contacts, this);
+            recyclerViewAdapter = new RecyclerViewAdapter(contacts, this,this);
             binding.recyclerView.setAdapter(recyclerViewAdapter);
 
         });
@@ -70,6 +72,12 @@ public class MainActivity extends AppCompatActivity {
 
             contactViewModel.insert(contact);
         }
+    }
+
+    @Override
+    public void onContactClick(int position) {
+        Contact contact = contactViewModel.contacts.getValue().get(position);
+        Log.d(TAG, "onContentClick: " + contact.getName());
     }
 }
 
